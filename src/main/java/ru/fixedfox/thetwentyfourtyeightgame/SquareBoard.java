@@ -3,9 +3,8 @@ package ru.fixedfox.thetwentyfourtyeightgame;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 
-public class SquareBoard extends Board {
+public class SquareBoard<V> extends Board<Key,V> {
 
     public SquareBoard(int size) {
         super(size, size);
@@ -16,8 +15,8 @@ public class SquareBoard extends Board {
      * Если нужно задать пустой элемент, указываем null.
      */
     @Override
-    public void fillBoard(List<Integer> list) {
-        Iterator<Integer> bufferOfValue = list.iterator();
+    public void fillBoard(List<V> list) {
+        Iterator<V> bufferOfValue = list.iterator();
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 if (bufferOfValue.hasNext()) {
@@ -48,7 +47,7 @@ public class SquareBoard extends Board {
      * Добавляем элемент {@param value} по ключу {@param key}.
      */
     @Override
-    public void addItem(Key key, Integer value) {
+    public void addItem(Key key, V value) {
         board.put(key, value);
     }
 
@@ -57,7 +56,7 @@ public class SquareBoard extends Board {
      */
     @Override
     public Key getKey(int i, int j) {
-        if (board.containsKey(new Key(i, j)) == true) {
+        if (board.containsKey(new Key(i, j))) {
             return new Key(i, j);
         } else {
             return null;
@@ -68,7 +67,7 @@ public class SquareBoard extends Board {
      * Получаем значение по {@param key}
      */
     @Override
-    public Integer getValue(Key key) {
+    public V getValue(Key key) {
         return board.get(key);
     }
 
@@ -100,25 +99,16 @@ public class SquareBoard extends Board {
      * Проверяем, есть ли такое значение на поле.
      */
     @Override
-    public boolean hasValue(Integer value) {
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                var a = value;
-                var b = board.get(getKey(i, j));
-                if (a == b) {
-                    return true;
-                }
-            }
-        }
-        return false;
+    public boolean hasValue(V value) {
+        return board.containsValue(value);
     }
 
     /**
      * Получаем строку значений по строке ключей.
      */
     @Override
-    public List<Integer> getValues(List<Key> keys) {
-        var resultList = new ArrayList<Integer>();
+    public List<V> getValues(List<Key> keys) {
+        var resultList = new ArrayList<V>();
         for (Key key : keys) {
             resultList.add(board.get(key));
         }
