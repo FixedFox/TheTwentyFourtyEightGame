@@ -26,7 +26,6 @@ public class GameHelper {
                 listWithoutNull.set(j, left * 2);
                 listWithoutNull.set(j + 1, null);
                 listWithoutNull = leftShifter(listWithoutNull);
-                continue;
             }
         }
         return listWithoutNull;
@@ -38,9 +37,7 @@ public class GameHelper {
             var left = shiftedList.get(i);
             var right = shiftedList.get(i + 1);
 
-            if (left != null) {
-                continue;
-            } else {
+            if (left == null) {
                 int j = i + 1;
                 while (j < (shiftedList.size())) {
                     right = shiftedList.get(j);
