@@ -3,6 +3,7 @@ package ru.fixedfox.thetwentyfourtyeightgame;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 public class SquareBoard extends Board {
 
@@ -20,7 +21,7 @@ public class SquareBoard extends Board {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 if (bufferOfValue.hasNext()) {
-                    board.put(getKey(i, j), bufferOfValue.next());
+                    addItem(new Key(i, j), bufferOfValue.next());
                 }
             }
         }
@@ -34,7 +35,8 @@ public class SquareBoard extends Board {
         var listOfEmptyCells = new ArrayList<Key>();
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                if (null == board.get(getKey(i, j))) {
+                var a = getValue(getKey(i, j));
+                if (a == null) {
                     listOfEmptyCells.add(getKey(i, j));
                 }
             }
@@ -55,7 +57,11 @@ public class SquareBoard extends Board {
      */
     @Override
     public Key getKey(int i, int j) {
-        return new Key(i, j);
+        if (board.containsKey(new Key(i, j)) == true) {
+            return new Key(i, j);
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -73,7 +79,7 @@ public class SquareBoard extends Board {
     public List<Key> getColumn(int i) {
         var resultList = new ArrayList<Key>();
         for (int j = 0; j < height; j++) {
-            resultList.add(getKey(i, j));
+            resultList.add(getKey(j, i));
         }
         return resultList;
     }
@@ -85,7 +91,7 @@ public class SquareBoard extends Board {
     public List<Key> getRow(int j) {
         var resultList = new ArrayList<Key>();
         for (int i = 0; i < height; i++) {
-            resultList.add(getKey(i, j));
+            resultList.add(getKey(j, i));
         }
         return resultList;
     }
@@ -97,7 +103,9 @@ public class SquareBoard extends Board {
     public boolean hasValue(Integer value) {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                if (value.equals(board.get(getKey(i, j)))){
+                var a = value;
+                var b = board.get(getKey(i, j));
+                if (a == b) {
                     return true;
                 }
             }
