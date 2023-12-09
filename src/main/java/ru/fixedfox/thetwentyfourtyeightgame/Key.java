@@ -1,6 +1,5 @@
 package ru.fixedfox.thetwentyfourtyeightgame;
 
-import java.util.Map;
 import java.util.Objects;
 
 public class Key {
