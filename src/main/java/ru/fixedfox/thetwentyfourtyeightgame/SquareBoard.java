@@ -3,6 +3,8 @@ package ru.fixedfox.thetwentyfourtyeightgame;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
+
 
 public class SquareBoard<V> extends Board<Key,V> {
 
@@ -32,6 +34,10 @@ public class SquareBoard<V> extends Board<Key,V> {
     @Override
     public List<Key> availableSpace() {
         var listOfEmptyCells = new ArrayList<Key>();
+        if( board.isEmpty()){
+            return listOfEmptyCells;
+        }
+
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 var a = getValue(getKey(i, j));

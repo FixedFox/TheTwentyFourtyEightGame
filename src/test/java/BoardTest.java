@@ -4,7 +4,7 @@ import java.util.List;
 import static java.util.Arrays.asList;
 
 public class BoardTest {
-    private final static Board board = new SquareBoard(2);
+    private final static Board<Key,Integer> board = new SquareBoard(2);
 
     public static void main(String[] args) {
         board.fillBoard(asList(1,2,3,null));
