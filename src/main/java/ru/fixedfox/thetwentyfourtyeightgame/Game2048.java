@@ -31,7 +31,7 @@ public class Game2048 implements Game {
     }
 
     @Override
-    public boolean canMove() { //TODO: Нужна проверка по по пустым ячейкам и по возможности слияния
+    public boolean canMove() {
         if (!board.availableSpace().isEmpty()) {
             return true;
         }
@@ -69,7 +69,7 @@ public class Game2048 implements Game {
                 for (int i = 0; i < GAME_SIZE; i++) {
                     notRotatedBoard.addAll(helper.moveAndMergeEqual(board.getValues(board.getColumn(i))));
                 }
-                resultBoard =(ArrayList<Integer>) rotate90Deg(notRotatedBoard);
+                resultBoard = (ArrayList<Integer>) rotate90Deg(notRotatedBoard);
                 board.fillBoard(resultBoard);
                 break;
             case DOWN:
@@ -79,27 +79,30 @@ public class Game2048 implements Game {
                     reverse(bufferLine);
                     notRotatedBoard.addAll(bufferLine);
                 }
-                resultBoard =(ArrayList<Integer>) rotate90Deg(notRotatedBoard);
+                resultBoard = (ArrayList<Integer>) rotate90Deg(notRotatedBoard);
 
                 board.fillBoard(resultBoard);
                 break;
         }
-        if (!board.availableSpace().isEmpty()) {
-            addItem();
-        }
+        addItem();
         return true;
     }
 
     @Override
     public void addItem() {
-        Key newItemKey;
-        do {
-            newItemKey = new Key(random.nextInt(GAME_SIZE), random.nextInt(GAME_SIZE));
-        } while (null != board.getValue(newItemKey));
-        if (random.nextInt(10) < 9) {
-            board.addItem(newItemKey, 2);
-        } else {
-            board.addItem(newItemKey, 4);
+        try {
+            if (!board.availableSpace().isEmpty()) {
+                Key newItemKey = board.availableSpace().get(random.nextInt(board.availableSpace().size()));
+                if (random.nextInt(10) < 9) {
+                    board.addItem(newItemKey, 2);
+                } else {
+                    board.addItem(newItemKey, 4);
+                }
+            } else {
+                throw new NotEnoughSpace("Not enough space, but game must go on!");
+            }
+    } catch (NotEnoughSpace e){
+        System.out.println("GAME MUST GO ON");
         }
     }
 
@@ -123,7 +126,7 @@ public class Game2048 implements Game {
     }
 
     private List<Integer> rotate90Deg(List<Integer> list) {
-    var newList = new ArrayList<Integer>();
+        var newList = new ArrayList<Integer>();
         for (int i = 0; i < GAME_SIZE; i++) {
             for (int j = 0; j < GAME_SIZE; j++) {
                 newList.add(list.get(j * 4 + i));

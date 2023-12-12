@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class SquareBoard<V> extends Board<Key,V> {
+public class SquareBoard<V> extends Board<Key,V>  {
 
     public SquareBoard(int size) {
         super(size, size);
@@ -16,6 +16,13 @@ public class SquareBoard<V> extends Board<Key,V> {
      */
     @Override
     public void fillBoard(List<V> list) {
+        try {
+            if (list.size() > 16) {
+                throw new RuntimeException();
+            }
+        } catch (RuntimeException e) {
+            throw new ExceptionInInitializerError();
+        }
         Iterator<V> bufferOfValue = list.iterator();
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
