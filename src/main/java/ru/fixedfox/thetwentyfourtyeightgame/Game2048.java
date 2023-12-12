@@ -32,15 +32,23 @@ public class Game2048 implements Game {
 
     @Override
     public boolean canMove() { //TODO: Нужна проверка по по пустым ячейкам и по возможности слияния
-        return !board.availableSpace().isEmpty();
+        if (!board.availableSpace().isEmpty()) {
+            return true;
+        }
+        for (int i = 0; i < GAME_SIZE; i++) {
+            if (hasMatch(board.getValues(board.getRow(i))) || hasMatch(board.getValues(board.getColumn(i)))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean move(Direction direction) {
-        List<Key> keyBuffer = new ArrayList<Key>();
+        List<Key> keyBuffer;
         var notRotatedBoard = new ArrayList<Integer>();
         var resultBoard = new ArrayList<Integer>();
-        List<Integer> bufferLine = new ArrayList<>();
+        List<Integer> bufferLine;
         switch (direction) {
             case LEFT:
                 for (int i = 0; i < GAME_SIZE; i++) {
@@ -61,11 +69,7 @@ public class Game2048 implements Game {
                 for (int i = 0; i < GAME_SIZE; i++) {
                     notRotatedBoard.addAll(helper.moveAndMergeEqual(board.getValues(board.getColumn(i))));
                 }
-                for (int i = 0; i < GAME_SIZE; i++) {
-                    for (int j = 0; j < GAME_SIZE; j++) {
-                        resultBoard.add(notRotatedBoard.get(j * 4 + i));
-                    }
-                }
+                resultBoard =(ArrayList<Integer>) rotate90Deg(notRotatedBoard);
                 board.fillBoard(resultBoard);
                 break;
             case DOWN:
@@ -75,15 +79,14 @@ public class Game2048 implements Game {
                     reverse(bufferLine);
                     notRotatedBoard.addAll(bufferLine);
                 }
-                for (int i = 0; i < GAME_SIZE; i++) {
-                    for (int j = 0; j < GAME_SIZE; j++) {
-                        resultBoard.add(notRotatedBoard.get(j * 4 + i));
-                    }
-                }
+                resultBoard =(ArrayList<Integer>) rotate90Deg(notRotatedBoard);
+
                 board.fillBoard(resultBoard);
                 break;
         }
-        addItem();
+        if (!board.availableSpace().isEmpty()) {
+            addItem();
+        }
         return true;
     }
 
@@ -101,12 +104,31 @@ public class Game2048 implements Game {
     }
 
     @Override
-    public Board getGameBoard() { //TODO: Row use, надо подумать, что с этим сделать.
+    public Board<Key, Integer> getGameBoard() {
         return board;
     }
 
     @Override
     public boolean hasWin() {
         return board.hasValue(2048);
+    }
+
+    private boolean hasMatch(List<Integer> list) {
+        for (int i = 0; i < list.size() - 1; i++) {
+            if (list.get(i).equals(list.get(i + 1))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private List<Integer> rotate90Deg(List<Integer> list) {
+    var newList = new ArrayList<Integer>();
+        for (int i = 0; i < GAME_SIZE; i++) {
+            for (int j = 0; j < GAME_SIZE; j++) {
+                newList.add(list.get(j * 4 + i));
+            }
+        }
+        return newList;
     }
 }

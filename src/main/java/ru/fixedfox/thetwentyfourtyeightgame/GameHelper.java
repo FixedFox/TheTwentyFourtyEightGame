@@ -1,56 +1,53 @@
 package ru.fixedfox.thetwentyfourtyeightgame;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GameHelper {
     public List<Integer> moveAndMergeEqual(List<Integer> list) {
-        var movedAndMergedItems = new ArrayList<>(list);
-        var listWithoutNull = leftShifter(movedAndMergedItems);
-        for (int j = 0; j < listWithoutNull.size() - 1; j++) {
+        shiftLeft(list);
 
-            var left = listWithoutNull.get(j);
-            var right = listWithoutNull.get(j + 1);
+        for (int j = 0; j < list.size() - 1; j++) {
 
-            if (left == null) {
-                listWithoutNull.set(j, right);
-                listWithoutNull.set(j + 1, null);
-                listWithoutNull = leftShifter(listWithoutNull);
+            var first = list.get(j);
+            var second = list.get(j + 1);
+
+            if (first == null) {
+                list.set(j, second);
+                list.set(j + 1, null);
+                shiftLeft(list);
                 continue;
             }
-            if (right == null) {
+            if (second == null) {
                 continue;
             }
 
-            if (left.equals(right)) {
-                listWithoutNull.set(j, left * 2);
-                listWithoutNull.set(j + 1, null);
-                listWithoutNull = leftShifter(listWithoutNull);
+            if (first.equals(second)) {
+                list.set(j, first * 2);
+                list.set(j + 1, null);
+                shiftLeft(list);
             }
         }
-        return listWithoutNull;
+        return list;
     }
 
-    private List<Integer> leftShifter(List<Integer> list) {
-        var shiftedList = new ArrayList<>(list);
-        for (int i = 0; i < shiftedList.size() - 1; i++) {
-            var left = shiftedList.get(i);
-            var right = shiftedList.get(i + 1);
+    private void shiftLeft(List<Integer> list) {
+        for (int i = 0; i < list.size() - 1; i++) {
+            var left = list.get(i);
+            var right = list.get(i + 1);
 
             if (left == null) {
                 int j = i + 1;
-                while (j < (shiftedList.size())) {
-                    right = shiftedList.get(j);
+                while (j < (list.size())) {
+                    right = list.get(j);
                     if (right != null) {
-                        shiftedList.set(i, right);
-                        shiftedList.set(j, null);
+                        list.set(i, right);
+                        list.set(j, null);
                         break;
                     }
                     j++;
                 }
             }
         }
-        return shiftedList;
     }
 }
 

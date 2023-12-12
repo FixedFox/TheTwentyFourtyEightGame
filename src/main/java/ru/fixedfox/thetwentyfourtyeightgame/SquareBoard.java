@@ -3,8 +3,7 @@ package ru.fixedfox.thetwentyfourtyeightgame;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
-
+import java.util.Map;
 
 public class SquareBoard<V> extends Board<Key,V> {
 
