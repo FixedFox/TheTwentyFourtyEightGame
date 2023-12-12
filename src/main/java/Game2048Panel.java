@@ -80,7 +80,7 @@ public Game2048Panel() {
         super.paint(g);
         g.setColor(BG_COLOR);
         g.fillRect(0, 0, this.getSize().width, this.getSize().height);
-        Board<Key, Integer> board = game.getGameBoard();
+        Board<Key, Integer> board =game.getGameBoard();
         for (int y = 0; y < GAME_SIZE; y++) {
             for (int x = 0; x < GAME_SIZE; x++) {
                 drawTile(g, board.getValue(board.getKey(y, x)), x, y);

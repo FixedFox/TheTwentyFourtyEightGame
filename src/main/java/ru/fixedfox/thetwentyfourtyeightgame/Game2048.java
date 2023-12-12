@@ -20,7 +20,7 @@ public class Game2048 implements Game {
 
     @Override
     public void init() {
-        var game2048 = new Game2048();
+        new Game2048();
         board.fillBoard(asList(
                 null, null, null, null,
                 null, null, null, null,
